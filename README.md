@@ -1,3 +1,55 @@
+# Mobile Beta Onboarding
+
+This repository is a fork of [fastlane/boarding](https://github.com/fastlane/boarding) with a few Android specific updates and a Dockerfile for deploying in the Strava mesosphere. The original `boarding` README.md is below, but what follows is information for making changes, running locally, and deploying.
+
+* [Site](https://mobilebeta.strava.com)
+* [Repository](https://github.com/strava/iphone-boarding)
+* [Configuration](https://github.com/strava/configuration/pull/2167/files)
+* [Status](http://marathon.prod.mesos.strava.com/ui/#/apps/%2Fiphone-boarding)
+
+# Making changes
+
+1. Clone this repository
+2. Test your changes locally (see below)
+3. Submit a pull request
+4. Once merged, deploy (see below)
+
+# Running Locally
+
+## Prerequisites
+
+* [strava/iphone-boarding](https://github.com/strava/iphone-boarding)
+* [Docker](https://www.docker.com)
+* ITMS password for iphone@strava (replace XXXXXXX below), see [mobile.kdbx](https://github.com/strava/administration/blob/master/credentials/mobile.kdbx)
+
+## Running via Docker
+
+First build the image `./build.sh`, then run:
+
+```shell
+docker run \                     
+-e ITC_APP_ID='426826309' \
+-e ITC_PASSWORD='XXXXXXX' \
+-e ITC_TOKEN='stravaproveit' \
+-e ITC_USER='iphone@strava.com' \
+-P docker.strava.com/strava/iphone-boarding
+```
+
+# Deploy
+
+## Prerequisites
+
+* [strava/configuration](https://github.com/strava/configuration)
+* Oncallers VPN access (ask Jason Milliron)
+
+## Deploying
+
+From `strava/configuration/mesos/tools`:
+
+```shell
+./marathon_deploy ../services/iphone-boarding/iphone-boarding.conf 
+```
+
 <h3 align="center">
   <a href="https://github.com/fastlane/fastlane">
     <img src="https://raw.githubusercontent.com/fastlane/boarding/master/app/assets/images/fastlane.png" width="100" />
