@@ -1,3 +1,46 @@
+This is a fork of [fastlane/boarding](https://github.com/fastlane/boarding) and the source for https://mobilebeta.strava.com. This portion of the README.md covers how to maintain this source for Strava specific use at https://mobilebeta.strava.com. Below you will find the original contents of the fastlane/boarding README.md.
+
+# Development
+
+To customize this version of `boarding` make changes, test them locally, and submit them as a pull request.
+
+Prerequisites:
+
+* Docker
+* The shared password for the iTMS account iphone-developers@strava.com available in [mobile.kdbx](https://github.com/strava/administration/blob/master/credentials/mobile.kdbx) in [`strava/administration`](https://github.com/strava/administration).
+
+Running a local instance via docker:
+
+1. Modify `docker-compose.yml` to include the shared password peer to `ITC_USER`, in the form `ITC_PASSWORD: 'XXXXX'` where `XXXXX` is the actual password.
+2. Run `docker-compose-up` and visit http://localhost:3000
+
+# Maintenence
+
+`fastlane/boarding` relies heavily on `fastlane` and `spaceship` as dependencies. Both those dependencies change rapidly to comform to iTunes Connect updates and so this service may periodically break. Typically this can be fixed by merging from the canonical `fastlane/boarding`.
+
+1. `git pull https://github.com/fastlane/boarding`
+2. Resolve any merge conflicts - `Gemfile.lock` may conflict, in which case it can be easiest to just discard the changes to that file and then run `bundle install` - then commmit the merge commit.
+3. Push the changes back to this repository or open a pull request on a branch and merge it
+
+# Deploy
+
+Once any changes or maintenence is done you can deploy the service using marathon.
+
+Prerequisites:
+
+* [strava/configuration](https://github.com/strava/configuration)
+* Access to deploy (VPN access to DMZ for instance)
+
+1. Ensure your changes are functional and merged
+2. Ensure a docker image has been created and pushed `docker-compose build && docker-compose push`
+3. From `strava/configuration` in the `mesos` subdirectory `./tools/mesos_deploy ./services/iphone-boarding/iphone-boarding.conf`
+
+---
+
+The original fastlane/boarding README.md follows below…
+
+---
+
 <h3 align="center">
   <a href="https://github.com/fastlane/fastlane">
     <img src="https://raw.githubusercontent.com/fastlane/boarding/master/app/assets/images/fastlane.png" width="100" />
